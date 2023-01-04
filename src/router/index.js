@@ -1,36 +1,27 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '@/view/Home';
-import Login from '@/view/Login';
-import Register from '@/view/Register';
-import Search from '@/view/Search';
+import routes from './routes';
+// import TypeNav from '@/components/TypeNav';
 Vue.use(VueRouter);
 let newPush = VueRouter.prototype.push;
-VueRouter.prototype.push = function (localhost, resove, reject) {
-  if (!resove && !reject) {
+VueRouter.prototype.push = function (localtion, resolve, reject) {
+  if (resolve === undefined && reject === undefined) {
     // newPush(localhost);
-    newPush.call(this, localhost).catch(() => {});
+    return newPush.call(this, localtion).catch(() => {});
     // console.log(this);
+  } else {
+    return newPush.call(this, localtion, resolve, reject);
   }
 };
-export default new VueRouter({
-  routes: [
-    {
-      path: '/home',
-      component: Home,
-    },
-    {
-      path: '/login',
-      component: Login,
-    },
-    {
-      path: '/register',
-      component: Register,
-    },
-    {
-      name: 'search',
-      path: '/search/:keyword?',
-      component: Search,
-    },
-  ],
+const router = new VueRouter({
+  routes: routes,
+  scrollBehavior(to, from, savedPosition) {
+    // 始终滚动到顶部
+    return { y: 0 };
+    // return { top: 0 }
+  },
 });
+router.beforeEach((to, from, next) => {
+  next();
+});
+export default router;

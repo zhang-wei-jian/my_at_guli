@@ -2,7 +2,8 @@
   <div>
     <Header></Header>
 <router-view></router-view>
-    <Footer></Footer>
+    <!-- <Footer v-if="isHidden"></Footer> -->
+    <Footer v-if="!$route.meta.isHidden"></Footer>
   </div>
 </template>
 
@@ -15,7 +16,14 @@ export default {
   components:{
     Header,
     Footer
-  }
+  },
+  mounted(){
+    // console.log(this.$route);
+    
+  },
+  // computed(){
+   
+  // }
 }
 </script>
 
