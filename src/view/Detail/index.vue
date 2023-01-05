@@ -421,7 +421,7 @@ export default {
         };
         this.spuSaleAttrList.forEach(attr=>{
           const res = attr.spuSaleAttrValueList.find(item=>{
-            console.log(item);
+            // console.log(item);
             
               return item.isChecked ==='1'
           })

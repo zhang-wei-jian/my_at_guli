@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import routes from './routes';
+import store from '@/store';
 // import TypeNav from '@/components/TypeNav';
 Vue.use(VueRouter);
 let newPush = VueRouter.prototype.push;
@@ -21,7 +22,34 @@ const router = new VueRouter({
     // return { top: 0 }
   },
 });
-router.beforeEach((to, from, next) => {
-  next();
+router.beforeEach(async (to, from, next) => {
+  const token = store.state.user.token;
+  const userInfo = store.state.user.userInfo.name;
+  // console.log(token, userInfo, '有token');
+
+  if (token) {
+    //用户登录了
+    if (to.path === '/login') next('/');
+    if (userInfo) {
+      next();
+    } else {
+      //没有Name数据
+      try {
+        await store.dispatch('getUserInfo');
+      } catch (error) {
+        localStorage.removeItem('token');
+        next('login');
+        alert(error + '请重新登录,因为token过期');
+      }
+      next();
+    }
+  } else {
+    //不能去购物车订单列表
+    next();
+  }
+
+  // console.log('最后跳转了');
+
+  // next();
 });
 export default router;

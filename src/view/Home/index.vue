@@ -42,13 +42,15 @@ export default {
   },
   mounted() {
     this.getFloorList();
-    this.getUserInfo();
+    // this.getUserInfo();
   },
   methods: {
     getFloorList() { 
       this.$store.dispatch("getFloorList");
     },
  async  getUserInfo(){
+
+  
        await this.$store.dispatch('getUserInfo')
 
         

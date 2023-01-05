@@ -19,9 +19,17 @@ export const reqSearchGoods =(searchParmas)=>ajax({url:'/list',method:'post',dat
 
 export const reqGoodsDetail=(skuId)=>ajax({url:`/item/${ skuId }`})
 
+//添加到购物车的
 export const reqAddShopcart=(skuId,skuNum)=>ajax({url:`/cart/addToCart/${ skuId }/${ skuNum }`,method:'post'})
-
 //登录的
 export const reqLogin = (paramsObj)=>ajax({url:'/user/passport/login',method:'post',data:paramsObj})
 //根据token获取用户信息
 export const reqUseInfo=()=>ajax({url:'/user/passport/auth/getUserInfo',method:'get'})
+//退出登录
+export const reqQuit=()=>ajax({url:'/user/passport/logout'})
+//获取购物车列表
+export const reqCartList=()=>ajax({url:'/cart/cartList'})
+//妒忌商品数量进行修改
+export const reqAddCart=(skuId,skuNum)=>ajax({url:`/cart/addToCart/${ skuId }/${ skuNum }`,method:'post'})
+//修改购物车的选中状态
+export const reqCheckedCart=(skuId,isChecked)=>ajax({url:`/cart/checkCart/${skuId}/${isChecked}`,method:'get'})

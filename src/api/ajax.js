@@ -22,7 +22,7 @@ ajax.interceptors.request.use(function (config) {
   config.headers.useTempId = getUserTempId(); //可以添加购物车及获取购物车时让后端知道是谁
   // console.log(store.state.user.token && getToken(),'token有没有');
   if (store.state.user.token && getToken()) {
-    //locastorage和vuex中都有token
+    // locastorage和vuex中都有token
 
     
     config.headers.token = store.state.user.token && getToken()

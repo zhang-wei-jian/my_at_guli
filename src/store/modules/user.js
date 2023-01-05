@@ -1,4 +1,4 @@
-import { reqLogin, reqUseInfo } from '@/api';
+import { reqLogin, reqQuit, reqUseInfo } from '@/api';
 import { getToken, setToken } from '@/utils/userAbout';
 
 export default {
@@ -19,6 +19,10 @@ export default {
     USERINFO(state, userInfo) {
       state.userInfo = userInfo;
     },
+    QUIT(state){//退出登录清空vueX数据
+      state.userInfo={}
+      state.token=getToken()
+    }
   },
   actions: {
     //请求用户token的
@@ -35,11 +39,20 @@ export default {
     //拿着token去请求用户信息的
     async getUserInfo({ commit }) {
       const res = await reqUseInfo();
-      console.log(res);
+   
       if (res.code === 200) {
         commit('USERINFO', res.data);
+        return 'ok'
+      }else{
+        return Promise.reject('err获取userInfo错误')
       }
     },
+   async quit({commit}){
+    const res =    await reqQuit()
+ 
+    commit('QUIT')
+ 
+    }
   },
   getters: {},
 };

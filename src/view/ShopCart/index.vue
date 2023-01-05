@@ -11,96 +11,65 @@
         <div class="cart-th6">操作</div>
       </div>
       <div class="cart-body">
-        <ul class="cart-list">
+        <ul v-for="item in cartInfoList" :key="item.id" class="cart-list">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list">
+            <input @click="editCheck(item)" type="checkbox" :checked="item.isChecked" name="chk_list" />
           </li>
           <li class="cart-list-con2">
-            <img src="./images/goods1.png">
-            <div class="item-msg">米家（MIJIA） 小米小白智能摄像机增强版 1080p高清360度全景拍摄AI增强</div>
+            <img :src="item.imgUrl" />
+            <div class="item-msg">{{ item.skuName }}</div>
           </li>
           <li class="cart-list-con4">
-            <span class="price">399.00</span>
+            <span class="price">{{ item.skuPrice }}.00</span>
           </li>
           <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
-            <input autocomplete="off" type="text" value="1" minnum="1" class="itxt">
-            <a href="javascript:void(0)" class="plus">+</a>
+            <a
+              href="javascript:void(0)"
+              @click="changeSum('sum', -1, item)"
+              class="mins"
+              >-</a
+            >
+            <input
+              autocomplete="off"
+              @change="changeSum('input', Number($event.target.value), item)"
+              type="text"
+              :value="item.skuNum"
+              minnum="1"
+              class="itxt"
+            />
+            <a
+              href="javascript:void(0)"
+              @click="changeSum('add', +1, item)"
+              class="plus"
+              >+</a
+            >
           </li>
           <li class="cart-list-con6">
-            <span class="sum">399</span>
+            <span class="sum">{{ item.skuPrice * item.skuNum }}</span>
           </li>
           <li class="cart-list-con7">
             <a href="#none" class="sindelet">删除</a>
-            <br>
-          </li>
-        </ul>
-
-        <ul class="cart-list">
-          <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" id="" value="">
-          </li>
-          <li class="cart-list-con2">
-            <img src="./images/goods2.png">
-            <div class="item-msg">华为（MIJIA） 华为metaPRO 30 浴霸4摄像 超清晰</div>
-          </li>
-          <li class="cart-list-con4">
-            <span class="price">5622.00</span>
-          </li>
-          <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
-            <input autocomplete="off" type="text" value="1" minnum="1" class="itxt">
-            <a href="javascript:void(0)" class="plus">+</a>
-          </li>
-          <li class="cart-list-con6">
-            <span class="sum">5622</span>
-          </li>
-          <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
-            <br>
-          </li>
-        </ul>
-
-        <ul class="cart-list">
-          <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" id="" value="">
-          </li>
-          <li class="cart-list-con2">
-            <img src="./images/goods3.png">
-            <div class="item-msg">iphone 11 max PRO 苹果四摄 超清晰 超费电 超及好用</div>
-          </li>
-          <li class="cart-list-con4">
-            <span class="price">11399.00</span>
-          </li>
-          <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
-            <input autocomplete="off" type="text" value="1" minnum="1" class="itxt">
-            <a href="javascript:void(0)" class="plus">+</a>
-          </li>
-          <li class="cart-list-con6">
-            <span class="sum">11399</span>
-          </li>
-          <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
-            <br>
+            <br />
           </li>
         </ul>
       </div>
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox">
+        <input class="chooseAll" type="checkbox" />
         <span>全选</span>
       </div>
       <div class="option">
         <a href="#none">删除选中的商品</a>
       </div>
       <div class="money-box">
-        <div class="chosed">已选择
-          <span>0</span>件商品</div>
+        <div class="chosed">
+          已选择 <span>{{ checkedSum }}</span
+          >件商品
+        </div>
         <div class="sumprice">
           <em>总价（不含运费） ：</em>
-          <i class="summoney">0</i>
+          <i class="summoney">{{ priceSum }}</i>
         </div>
         <div class="sumbtn">
           <a class="sum-btn" href="###" target="_blank">结算</a>
@@ -111,10 +80,71 @@
 </template>
 
 <script>
-  export default {
-    name: 'ShopCart',
-  }
+import { mapState } from "vuex";
+export default {
+  name: "ShopCart",
+  computed: {
+    ...mapState({
+      cartInfoList: (state) => state.ShopCart.cartInfoList,
+    }),
+    //总选中数量
+    checkedSum() {
+      let sum = 0;
+      this.cartInfoList.forEach((item) => {
+        if (item.isChecked) sum += 1;
+      });
+      return sum;
+    },
+    //总选中价格
+    priceSum() {
+      return this.cartInfoList.reduce((prev, item) => {
+        if (item.isChecked) {
+          prev += item.skuPrice * item.skuNum;
+        }
+        return prev;
+      }, 0);
+    },
+  },
+  mounted() {
+    this.getCartList();
+    console.log(this.cartInfoList);
+  },
+  methods: {
+    getCartList() {
+      this.$store.dispatch("getCartList");
+    },
+    async changeSum(flag, disNum, item) {
+      //disNum 是最新的值
+      //item是这个数组的数
+      if (flag === "add") {
+      } else if (flag === "sum") {
+        if (item.skuNum <= 1) return;
+      } else if (flag === "input") {
+        disNum = disNum < 1 ? 0 : item.skuNum;
+        console.log(disNum);
+      }
+      try {
+        await this.$store.dispatch("editShopCart", {
+          id: item.skuId,
+          sum: disNum,
+        });
+      } catch (error) {
+        alert('修改购物车数量失败')
+      }
+      this.getCartList();
+    },
+    editCheck(item){
+// console.log(typeof item.isChecked);
+console.log(item.skuId);
 
+      this.$store.dispatch('editCheckedCart',{
+        skuId:item.skuId,
+        isChecked:item.isChecked===0? 1:0
+      })
+      this.getCartList();
+    }
+  },
+};
 </script>
 
 <style lang="less" scoped>
@@ -194,7 +224,7 @@
             width: 6px;
             text-align: center;
             padding: 8px;
-						text-decoration: none;
+            text-decoration: none;
           }
           input {
             border: 1px solid #ddd;
@@ -213,7 +243,7 @@
             width: 6px;
             text-align: center;
             padding: 8px;
-						text-decoration: none;
+            text-decoration: none;
           }
         }
 
@@ -285,7 +315,6 @@
           font-size: 16px;
         }
       }
-			
 
       .sumbtn {
         float: right;
@@ -301,10 +330,10 @@
           font-family: "Microsoft YaHei";
           background: #e1251b;
           overflow: hidden;
-					text-decoration: none;
-					&hover {
-						color: white !important;
-					}
+          text-decoration: none;
+          &hover {
+            color: white !important;
+          }
         }
       }
     }

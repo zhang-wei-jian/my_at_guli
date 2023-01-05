@@ -10,9 +10,10 @@
           
             <router-link v-show="!userInfo.name" to="/login">登录</router-link>
             <router-link v-show="!userInfo.name" to="/register" class="register">免费注册</router-link>
-            <p v-show="userInfo.name">{{userInfo.name}}  少爷里面走！！</p>
-            <router-link to="/test" class="register">test传送门</router-link>
+            <p  v-show="userInfo.name">{{userInfo.name}}  少爷里面走！！</p>
+           <a v-show="userInfo.name" @click="out" href="javascript:;"> 退出</a>
           </p>
+          <router-link style="margin:20px" to="/test" >test传送门</router-link>
         </div>
         <div class="typeList">
           <router-link to="">我的订单</router-link>
@@ -81,6 +82,11 @@ export default {
         },
       });
     },
+    out(){
+      localStorage.removeItem('token')
+     this.$store.dispatch('quit')
+     this.$router.push('/')
+    }
   },
   computed: {
     ...mapState({
