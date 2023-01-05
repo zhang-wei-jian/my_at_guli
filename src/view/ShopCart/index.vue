@@ -13,7 +13,12 @@
       <div class="cart-body">
         <ul v-for="item in cartInfoList" :key="item.id" class="cart-list">
           <li class="cart-list-con1">
-            <input @click="editCheck(item)" type="checkbox" :checked="item.isChecked" name="chk_list" />
+            <input
+              @click="editCheck(item)"
+              type="checkbox"
+              :checked="item.isChecked"
+              name="chk_list"
+            />
           </li>
           <li class="cart-list-con2">
             <img :src="item.imgUrl" />
@@ -56,7 +61,8 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" />
+        <!-- <input @click="batchChecked" class="chooseAll" type="checkbox" /> -->
+        <input v-model="chooseAll" class="chooseAll" type="checkbox" />
         <span>全选</span>
       </div>
       <div class="option">
@@ -104,45 +110,75 @@ export default {
         return prev;
       }, 0);
     },
+    //全选状态
+    chooseAll:{
+      get(){
+       
+        console.log('sb');
+        return false
+        
+      },
+      set(newVal){
+        console.log(this.cartInfoList);
+        
+        console.log(this.cartInfoList.some(item=>item.isChecked));
+        
+      }
+    }
   },
   mounted() {
     this.getCartList();
     console.log(this.cartInfoList);
   },
   methods: {
+    //获取列表
     getCartList() {
       this.$store.dispatch("getCartList");
     },
+    //修改数量
     async changeSum(flag, disNum, item) {
       //disNum 是最新的值
       //item是这个数组的数
+      //我们要做的是计算出要发送给后端告诉他加多少减多少
       if (flag === "add") {
       } else if (flag === "sum") {
         if (item.skuNum <= 1) return;
-      } else if (flag === "input") {
-        disNum = disNum < 1 ? 0 : item.skuNum;
-        console.log(disNum);
+      } else if (flag === "input") {  
+        disNum = disNum < 0 ? item.skuNum :disNum - item.skuNum;
+   
       }
       try {
+        console.log(disNum,'这是最后修改的数量');
         await this.$store.dispatch("editShopCart", {
           id: item.skuId,
           sum: disNum,
         });
+        console.log('更新了页面数据');
+        
+        this.getCartList();
       } catch (error) {
-        alert('修改购物车数量失败')
+        alert("修改购物车数量失败");
       }
-      this.getCartList();
+     
     },
-    editCheck(item){
-// console.log(typeof item.isChecked);
-console.log(item.skuId);
+  async  editCheck(item) {
+      // console.log(typeof item.isChecked);
+      console.log(item.skuId);
 
-      this.$store.dispatch('editCheckedCart',{
-        skuId:item.skuId,
-        isChecked:item.isChecked===0? 1:0
-      })
-      this.getCartList();
-    }
+     await this.$store.dispatch("editCheckedCart", {
+        skuId: item.skuId,
+        isChecked: item.isChecked === 0 ? 1 : 0,
+      });
+      this.getCartList(); 
+    },
+    //批量选中
+    // batchChecked(e) {
+    //   let arr = this.cartInfoList.map((item) => item.skuId);
+    //   this.$store.dispatch("batchChecked", {
+    //     idList: arr,
+    //     isChecked: e.target.checked ? 1 : 0,
+    //   });
+    // },
   },
 };
 </script>
