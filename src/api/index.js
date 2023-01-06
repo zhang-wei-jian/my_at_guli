@@ -41,3 +41,4 @@ export const reqTrade=()=>ajax({url:`/order/auth/trade`  })
 export const reqSubmitTrade=(tradeNo,orderInfo)=>ajax({url:`/order/auth/submitOrder?tradeNo=${tradeNo}` ,data:orderInfo ,method:'post'})
 //订单支付
 export const reqPay=(orderId)=>ajax({url:`/payment/weixin/createNative/${orderId}` })
+//服了
