@@ -84,6 +84,15 @@
 <script>
   export default {
     name: 'Pay',
+    data(){
+      // orderId:this.$router
+    },
+    mounted(){
+      // this.$api.reqPay()
+      console.log(this.$router);
+      
+    },
+    methods:{}
   }
 </script>
 

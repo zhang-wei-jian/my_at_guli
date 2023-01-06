@@ -39,6 +39,8 @@ router.beforeEach(async (to, from, next) => {
       } catch (error) {
         localStorage.removeItem('token');
         next('/login');
+        console.log(error,'token过期我已经帮你自动跳转');
+        
         // alert(error + '请重新登录,因为token过期');
       }
       next();
