@@ -78,7 +78,7 @@
           <i class="summoney">{{ priceSum }}</i>
         </div>
         <div class="sumbtn">
-          <a class="sum-btn" href="###" target="_blank">结算</a>
+          <router-link class="sum-btn" to="/trade" >结算</router-link>
         </div>
       </div>
     </div>
@@ -111,24 +111,53 @@ export default {
       }, 0);
     },
     //全选状态
-    chooseAll:{
-      get(){
-       
-        console.log('sb');
-        return false
+    chooseAll: {
+      get() {
+        const sb = this.cartInfoList.every((item) => {
+          if (item.isChecked) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+
+        return sb;
+      },
+   async   set(newVal) {
+        let arr = [];
+       this.cartInfoList.forEach((item) => {
+          if (item.isChecked != newVal) {
+            console.log(item);
+            
+            // arr.push(item.skuId) 
+            arr.push(item.skuId) 
+          }
+        });
+        console.log(arr,'arr');
+
+        // console.log(sb);
+
+        // console.log(this.cartInfoList.some(item=>item.isChecked));
+
+        //   this.$store.dispatch("batchChecked", {
+        //   idList: arr,
+        //   isChecked: newVal ? 1 : 0,
+        // });
+       await this.$store.dispatch("batchChecked", {
+          isChecked: newVal? 1 :0,
+          skuIdList: arr,
+        });
+      
+        
+        this.getCartList()
+    
         
       },
-      set(newVal){
-        console.log(this.cartInfoList);
-        
-        console.log(this.cartInfoList.some(item=>item.isChecked));
-        
-      }
-    }
+    },
   },
   mounted() {
     this.getCartList();
-    console.log(this.cartInfoList);
+    // console.log(this.cartInfoList);
   },
   methods: {
     //获取列表
@@ -143,33 +172,32 @@ export default {
       if (flag === "add") {
       } else if (flag === "sum") {
         if (item.skuNum <= 1) return;
-      } else if (flag === "input") {  
-        disNum = disNum < 0 ? item.skuNum :disNum - item.skuNum;
-   
+      } else if (flag === "input") {
+        disNum = disNum < 1 ? 0 : disNum - item.skuNum;
       }
       try {
-        console.log(disNum,'这是最后修改的数量');
+        // console.log(disNum,'这是最后修改的数量');
         await this.$store.dispatch("editShopCart", {
           id: item.skuId,
           sum: disNum,
         });
-        console.log('更新了页面数据');
-        
+       
+
         this.getCartList();
       } catch (error) {
         alert("修改购物车数量失败");
       }
-     
     },
-  async  editCheck(item) {
+    //修改选中
+    async editCheck(item) {
       // console.log(typeof item.isChecked);
       console.log(item.skuId);
 
-     await this.$store.dispatch("editCheckedCart", {
+      await this.$store.dispatch("editCheckedCart", {
         skuId: item.skuId,
         isChecked: item.isChecked === 0 ? 1 : 0,
       });
-      this.getCartList(); 
+      this.getCartList();
     },
     //批量选中
     // batchChecked(e) {

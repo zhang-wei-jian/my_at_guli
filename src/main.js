@@ -5,6 +5,7 @@ import store from '@/store';
 import TypeNav from '@/components/TypeNav';
 import Pagination from '@/components/Pagination';
 import '@/mock/mockServer'
+import * as api from '@/api'
 Vue.config.productionTip = false;
 Vue.component('TypeNav',TypeNav)  //这是导航栏三级
 Vue.component('Pagination',Pagination)//这是分液器
@@ -13,7 +14,8 @@ new Vue({
   store,
   beforeCreate(){
     // Vue.prototype.$bus = this
-    Vue.prototype.$bus=this
+    Vue.prototype.$bus=this;
+    Vue.prototype.$api=api
   },
 
   render: (h) => h(App),

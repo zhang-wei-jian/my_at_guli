@@ -6,6 +6,8 @@ import Test from '@/view/Test';
 import Detail from '@/view/Detail';
 import ShopCart from '@/view/ShopCart';
 import AddCartSuccess from '@/view/AddCartSuccess';
+import Trade from '@/view/Trade';
+import Pay from '@/view/Pay';
 export default [
   {
     path: '',
@@ -60,4 +62,13 @@ export default [
     path: '/shopcart',
     component: ShopCart,
   },
+  {
+    path: '/trade',
+    component: Trade,
+  },
+  {
+    path: '/pay/:orderId?',
+    component: Pay,
+  },
+
 ];

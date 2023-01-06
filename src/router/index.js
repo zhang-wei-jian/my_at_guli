@@ -38,8 +38,8 @@ router.beforeEach(async (to, from, next) => {
         await store.dispatch('getUserInfo');
       } catch (error) {
         localStorage.removeItem('token');
-        next('login');
-        alert(error + '请重新登录,因为token过期');
+        next('/login');
+        // alert(error + '请重新登录,因为token过期');
       }
       next();
     }
