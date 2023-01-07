@@ -29,7 +29,7 @@ router.beforeEach(async (to, from, next) => {
 
   if (token) {
     //用户登录了
-    if (to.path === '/login') next('/');
+    if (to.path === '/login') next('/');//登录了就不能跳转再去登录页面
     if (userInfo) {
       next();
     } else {
@@ -39,7 +39,7 @@ router.beforeEach(async (to, from, next) => {
       } catch (error) {
         localStorage.removeItem('token');
         next('/login');
-        console.log(error,'token过期我已经帮你自动跳转');
+        console.log(error,'token过期我已经帮你自动跳转');//token清掉了不应该走这里
         
         // alert(error + '请重新登录,因为token过期');
       }

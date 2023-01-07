@@ -8,6 +8,7 @@ import ShopCart from '@/view/ShopCart';
 import AddCartSuccess from '@/view/AddCartSuccess';
 import Trade from '@/view/Trade';
 import Pay from '@/view/Pay';
+
 export default [
   {
     path: '',
@@ -17,7 +18,65 @@ export default [
   {
     path: '/Test',
     component: Test,
+    children:[
+      {
+        path: '/communication',
+        component: () => import('@/view/Communication/Communication'),
+        children: [
+          {
+            path: 'pubsub',
+            component: () => import('@/view/Communication/PubsubTest/PubsubTest'),
+            meta: {
+              isHideFooter: true
+            },
+           },
+          {
+            path: 'event',
+            component: () => import('@/view/Communication/EventTest/EventTest'),
+            meta: {
+              isHideFooter: true
+            },
+          },
+          {
+            path: 'model',
+            component: () => import('@/view/Communication/ModelTest/ModelTest'),
+            meta: {
+              isHideFooter: true
+            },
+          },
+          {
+            path: 'sync',
+            component: () => import('@/view/Communication/SyncTest/SyncTest'),
+            meta: {
+              isHideFooter: true
+            },
+          },
+          {
+            path: 'attrs-listeners',
+            component: () => import('@/view/Communication/AttrsListenersTest/AttrsListenersTest'),
+            meta: {
+              isHideFooter: true
+            },
+          },
+          {
+            path: 'children-parent',
+            component: () => import('@/view/Communication/ChildrenParentTest/ChildrenParentTest'),
+            meta: {
+              isHideFooter: true
+            },
+          },
+          {
+            path: 'scope-slot',
+            component: () => import('@/view/Communication/ScopeSlotTest/ScopeSlotTest'),
+            meta: {
+              isHideFooter: true
+            },
+          }
+        ],
+      },
+    ]
   },
+
 
   {
     path: '/home',
@@ -70,5 +129,4 @@ export default [
     path: '/pay/:orderId?',
     component: Pay,
   },
-
 ];
