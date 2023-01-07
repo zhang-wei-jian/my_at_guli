@@ -5,7 +5,7 @@
       <div class="login">
         <div class="loginform">
           <div class="content">
-            <form action="##" >
+            <form action="##">
               <div class="input-text clearFix">
                 <span></span>
                 <input
@@ -22,9 +22,10 @@
                   placeholder="请输入密码"
                 />
               </div>
-              <button @click.prevent="login"  class="btn">登&nbsp;&nbsp;录</button>
+              <button @click.prevent="login" class="btn">
+                登&nbsp;&nbsp;录
+              </button>
               <!-- <button >登录</button> -->
-              
             </form>
             <div class="call clearFix">
               <router-link class="register" to="/register"
@@ -54,7 +55,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 export default {
   name: "Login",
   data() {
@@ -64,23 +65,22 @@ export default {
     };
   },
   methods: {
-   async login(e) {
-    // e.preventDefault()
+    async login(e) {
+      // e.preventDefault()
       try {
-       await this.$store.dispatch("goLogin", {
+        await this.$store.dispatch("goLogin", {
           phone: this.phone,
           password: this.password,
         });
-       
-        console.log('h获取了token');
-        
-        this.$router.push('/')
+
+        console.log("h获取了token");
+
+        this.$router.push("/");
       } catch (error) {
-       alert('登录出错')
+        alert("登录出错");
       }
     },
   },
-
 };
 </script>
 

@@ -28,6 +28,8 @@ router.beforeEach(async (to, from, next) => {
   // console.log(token, userInfo, '有token');
 
   if (token) {
+    console.log('表示我有token啊');
+    
     //用户登录了
     if (to.path === '/login') next('/');//登录了就不能跳转再去登录页面
     if (userInfo) {

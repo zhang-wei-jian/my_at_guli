@@ -36,26 +36,18 @@ export default {
     ...mapState({
       floorList: (state) => state.home.floorList,
     }),
- 
-
-  
   },
-  mounted() {
-    this.getFloorList();
+   mounted() {
+     this.getFloorList();
     // this.getUserInfo();
   },
   methods: {
-    getFloorList() { 
+    getFloorList() {
       this.$store.dispatch("getFloorList");
     },
- async  getUserInfo(){
-
-  
-       await this.$store.dispatch('getUserInfo')
-
-        
-     
-    }
+    async getUserInfo() {
+      await this.$store.dispatch("getUserInfo");
+    },
   },
 };
 </script>

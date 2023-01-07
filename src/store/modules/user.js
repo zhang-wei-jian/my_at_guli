@@ -39,12 +39,11 @@ export default {
     //拿着token去请求用户信息的
     async getUserInfo({ commit }) {
       const res = await reqUseInfo();
-   
       if (res.code === 200) {
         commit('USERINFO', res.data);
         return 'ok'
       }else{
-        return Promise.reject('err获取userInfo错误')
+        return Promise.reject('err获取userInfo错误'+res)
       }
     },
    async quit({commit}){
