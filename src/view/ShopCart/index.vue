@@ -91,7 +91,7 @@ export default {
   name: "ShopCart",
   computed: {
     ...mapState({
-      cartInfoList: (state) => state.ShopCart.cartInfoList,
+      cartInfoList: (state) => state.ShopCart.cartInfoList ,
     }),
     //总选中数量
     checkedSum() {

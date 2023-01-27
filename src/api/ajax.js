@@ -19,13 +19,13 @@ const ajax = axios.create({
 ajax.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么(config请求相关信息，请求报文)
   nProgress.start();
-  config.headers.useTempId = getUserTempId(); //可以添加购物车及获取购物车时让后端知道是谁
+  config.headers.userTempId = getUserTempId(); //可以添加购物车及获取购物车时让后端知道是谁
+  // console.log(config.headers.useTempId='ee7bbac1-462d-4edf-a813-0e12963cd272');
+
   // console.log(store.state.user.token && getToken(),'token有没有');
   if (store.state.user.token && getToken()) {
     // locastorage和vuex中都有token
-
-    
-    config.headers.token = store.state.user.token && getToken()
+    config.headers.token = store.state.user.token && getToken();
   }
 
   return config;

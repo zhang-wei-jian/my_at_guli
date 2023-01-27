@@ -3,31 +3,57 @@
     <!-- <img src="../images/s1.png" /> -->
     <!-- <img :src="skuImageList[0].imgUrl" /> -->
     <img :src="defaultImg.imgUrl" />
-    <div class="event"></div>
+
+    <div class="event" @mousemove="move"></div>
     <div class="big">
-      <img :src="defaultImg" />
+      <img :src="defaultImg.imgUrl" ref="bigImg"/>
     </div>
-    <div class="mask"></div>
+    <div class="mask" ref="mask"></div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Zoom",
+  name: 'Zoom',
   data() {
     return {
       defaultIndex: 1,
     };
   },
-  props: ["skuImageList"],
+  props: ['skuImageList'],
   mounted() {
-    this.$bus.$on("sendIndex", this.sendIndex);
+    this.$bus.$on('sendIndex', this.sendIndex);
   },
   methods: {
     sendIndex(index) {
-      // console.log('sb',index);
       this.defaultIndex = index;
     },
+    move(e){
+      let mask = this.$refs.mask  //拿到蒙版
+      let bigImg = this.$refs.bigImg
+      let mouseX = e.offsetX;  //小图的鼠标位置
+      let mouseY = e.offsetY;
+     let  moveX = mouseX - mask.offsetWidth/2   //蒙版的位置
+      let moveY = mouseY - mask.offsetHeight/2
+      if(moveX<0){
+        moveX  = 0
+      }else if(moveX> e.target.offsetWidth - mask.offsetWidth){
+        moveX =  e.target.offsetWidth - mask.offsetWidth
+      }
+       if(moveY<0){
+        moveY  = 0
+      }else if(moveY> e.target.offsetHeight - mask.offsetHeight){
+        moveY =  e.target.offsetHeight - mask.offsetHeight
+      }
+      mask.style.left  = moveX+'px'
+      mask.style.top  = moveY+'px'//蒙版最终位置
+      //大图的位置
+      bigImg.style.left = moveX*-2 + 'px'
+      bigImg.style.top = moveY*-2 + 'px'
+      
+     
+      
+    }
   },
   computed: {
     defaultImg() {

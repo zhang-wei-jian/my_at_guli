@@ -1,19 +1,23 @@
 <template>
   <div class="pagination">
+   
     <button :disabled="pageNo === 1">上一页</button>
-    <button v-show="pageNo > 1">1</button>
-    <button v-show="pageNo >= 2">···</button>
+    <button v-show="startEnt.start > 1" @click="$emit('searchOfPageNo',1)">1</button>
+    <button v-show="startEnt.start >= 2">···</button>
 
-    <button v-for="item in startEnt.end-startEnt.start+1" :key="item"
-    :class="{active: item + startEnt.start - 1===pageNo}"
+    <button v-for="item in startEnt.end-startEnt.start+1"
+     :key="item"
+    :class="{active: pageNo===item+startEnt.start-1}"
     @click="$emit('searchOfPageNo',item + startEnt.start - 1 )"
     >
+   
       {{ item + startEnt.start - 1 }}
     </button>
 
-    <button>···</button>
-    <button>{{ totalPage }}</button>
+    <button v-show="startEnt.end<totalPage-1">···</button>
+    <button v-show="startEnt.end <totalPage" @click="$emit('searchOfPageNo',totalPage)">{{ totalPage }}</button>
     <button>下一页</button>
+    {{ startEnt.ent }}
 
     <button style="margin-left: 30px">共 {{ total }} 条</button>
   </div>
@@ -37,18 +41,21 @@ export default {
         start = 1;
         end = totalPage;
       } else {
+        //正常页数就是当前页的前后一半
         start = pageNo - Math.floor(continues / 2);
         end = pageNo + Math.floor(continues / 2);
+        //左侧超出
         if (start < 1) {
           start = 1;
           end = continues;
         }
+        //右侧超出
         if (end > totalPage) {
           start = totalPage - continues + 1;
           end = totalPage;
         }
         return { start, end };
-        // return {start:5,end:5}
+      
       }
     },
   },

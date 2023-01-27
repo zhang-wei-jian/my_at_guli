@@ -29,6 +29,9 @@ export default {
       const res = await reqCartList();
       // console.log(res.data);
       if (res.code === 200) {
+        console.log(res);
+        
+       
         commit('UPDATA_CARTLIST', res.data[0].cartInfoList);
         return 'ok';
       } else {

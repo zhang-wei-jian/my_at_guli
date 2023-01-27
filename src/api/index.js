@@ -35,10 +35,19 @@ export const reqAddCart=(skuId,skuNum)=>ajax({url:`/cart/addToCart/${ skuId }/${
 export const reqCheckedCart=(skuId,isChecked)=>ajax({url:`/cart/checkCart/${skuId}/${isChecked}`,method:'get'})
 //批量修改购物车选中状态0/1
 export const reqBatchChecked=(isChecked,skuIdList)=>ajax({url:`/cart/batchCheckCart/${isChecked}`,method:'post',data:skuIdList  })
+//删除商品
+export const reqDeleteCart=(skuId)=>ajax({url:`/cart/deleteCart/${skuId}`,method:'delete' })
+
 //请求收获人信息
 export const reqTrade=()=>ajax({url:`/order/auth/trade`  })
 //获取订单列表
 export const reqSubmitTrade=(tradeNo,orderInfo)=>ajax({url:`/order/auth/submitOrder?tradeNo=${tradeNo}` ,data:orderInfo ,method:'post'})
-//订单支付
+//获取订单支付信息
 export const reqPay=(orderId)=>ajax({url:`/payment/weixin/createNative/${orderId}` })
-//服了
+//查看支付状态
+export const reqPayState=(orderId)=>ajax({url:`/payment/weixin/queryPayStatus/${orderId}` })
+
+//我的订单
+export const reqConter=()=>ajax({url:`/order/auth/{page}/{limit}` })
+
+

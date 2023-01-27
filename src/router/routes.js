@@ -8,7 +8,7 @@ import ShopCart from '@/view/ShopCart';
 import AddCartSuccess from '@/view/AddCartSuccess';
 import Trade from '@/view/Trade';
 import Pay from '@/view/Pay';
-
+import PaySuccess from '@/view/PaySuccess';
 export default [
   {
     path: '',
@@ -18,65 +18,72 @@ export default [
   {
     path: '/Test',
     component: Test,
-    children:[
+    children: [
       {
         path: '/communication',
         component: () => import('@/view/Communication/Communication'),
         children: [
           {
             path: 'pubsub',
-            component: () => import('@/view/Communication/PubsubTest/PubsubTest'),
+            component: () =>
+              import('@/view/Communication/PubsubTest/PubsubTest'),
             meta: {
-              isHideFooter: true
+              isHideFooter: true,
             },
-           },
+          },
           {
             path: 'event',
             component: () => import('@/view/Communication/EventTest/EventTest'),
             meta: {
-              isHideFooter: true
+              isHideFooter: true,
             },
           },
           {
             path: 'model',
             component: () => import('@/view/Communication/ModelTest/ModelTest'),
             meta: {
-              isHideFooter: true
+              isHideFooter: true,
             },
           },
           {
             path: 'sync',
             component: () => import('@/view/Communication/SyncTest/SyncTest'),
             meta: {
-              isHideFooter: true
+              isHideFooter: true,
             },
           },
           {
             path: 'attrs-listeners',
-            component: () => import('@/view/Communication/AttrsListenersTest/AttrsListenersTest'),
+            component: () =>
+              import(
+                '@/view/Communication/AttrsListenersTest/AttrsListenersTest'
+              ),
             meta: {
-              isHideFooter: true
+              isHideFooter: true,
             },
           },
           {
             path: 'children-parent',
-            component: () => import('@/view/Communication/ChildrenParentTest/ChildrenParentTest'),
+            component: () =>
+              import(
+                '@/view/Communication/ChildrenParentTest/ChildrenParentTest'
+              ),
             meta: {
-              isHideFooter: true
+              isHideFooter: true,
             },
           },
           {
             path: 'scope-slot',
-            component: () => import('@/view/Communication/ScopeSlotTest/ScopeSlotTest'),
+            component: () =>
+              import('@/view/Communication/ScopeSlotTest/ScopeSlotTest'),
             meta: {
-              isHideFooter: true
+              isHideFooter: true,
             },
-          }
+          },
         ],
       },
-    ]
+    ],
   },
-
 
   {
     path: '/home',
@@ -128,5 +135,15 @@ export default [
   {
     path: '/pay/:orderId?',
     component: Pay,
+  },
+  {
+    // name: 'paysuccess',
+    path: '/paysuccess',
+    // component: () => import('@/view/PaySuccess'),
+    component:PaySuccess
+  },
+  {
+    path: '/center',
+   component: () => import('@/view/Center'),
   },
 ];

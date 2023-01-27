@@ -6,13 +6,15 @@ import TypeNav from '@/components/TypeNav';
 import Pagination from '@/components/Pagination';
 import '@/mock/mockServer'
 import * as api from '@/api'
-import {Button} from 'element-ui'
+import {Button,Dialog,MessageBox} from 'element-ui'
 
 Vue.config.productionTip = false;
 Vue.component('TypeNav',TypeNav)  //这是导航栏三级
 Vue.component('Pagination',Pagination)//这是分液器
-Vue.component(Button.name, Button);
 
+Vue.component(Dialog.name, Dialog);
+Vue.prototype.$alert = MessageBox.alert;
+Vue.prototype.$MessageBox = MessageBox;
 new Vue({
   router,
   store,

@@ -78,7 +78,7 @@
               <li class="yui3-u-1-5" v-for="goods in goodsList" :key="goods.id">
                 <div class="list-wrap">
                   <div class="p-img">
-                    <router-link :to="`/detail/${goods.id}`" >
+                    <router-link :to="`/detail/${goods.id}`">
                       <img :src="goods.defaultImg" />
                     </router-link>
                   </div>
@@ -104,10 +104,10 @@
             </ul>
           </div>
           <!-- 分页器 -->
-          <p>{{total}}</p>
+
           <Pagination
-            :total="99"
-            :pageNo="5"
+            :total="total"
+            :pageNo="searchParams.pageNo"
             :continues="5"
             :pageSize="5"
             @searchOfPageNo="searchOfPageNo"
@@ -126,32 +126,32 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
-import SearchSelector from "./SearchSelector";
+import { mapGetters, mapState } from 'vuex';
+import SearchSelector from './SearchSelector';
 export default {
-  name: "Search",
+  name: 'Search',
   components: {
     SearchSelector,
   },
   data() {
     return {
       searchParams: {
-        category1Id: "", //一级分类id
-        category2Id: "", //二级分类id
-        category3Id: "", //三级分类id
-        categoryName: "", //分类名字
-        keyword: "", //关键字
+        category1Id: '', //一级分类id
+        category2Id: '', //二级分类id
+        category3Id: '', //三级分类id
+        categoryName: '', //分类名字
+        keyword: '', //关键字
         props: [], //属性
-        trademark: "", //品牌
+        trademark: '', //品牌
         // 下面这三个是默认参数
-        order: "1:desc", //排序规则 综合降序
+        order: '1:desc', //排序规则 综合降序
         pageNo: 1, //获取分页当中的第几页
         pageSize: 5, //页大小 一页获取几个数据
       },
     };
   },
   computed: {
-    ...mapGetters(["goodsList", "attrsList", "trademarkList"]),
+    ...mapGetters(['goodsList', 'attrsList', 'trademarkList']),
     ...mapState({
       total: (state) => state.search.goodsInfo.total,
     }),
@@ -178,18 +178,18 @@ export default {
   },
   methods: {
     getGoodsInfo() {
-      this.$store.dispatch("getGoodsInfo", this.searchParams);
+      this.$store.dispatch('getGoodsInfo', this.searchParams);
     },
     removeKeyword() {
-      this.searchParams.keyword = "";
+      this.searchParams.keyword = '';
       this.$router.push({
-        name: "search",
+        name: 'search',
         params: this.searchParams,
       });
     },
     searchOforder(id) {
       this.searchParams.order = `${id}:${
-        this.searchParams.order.split(":")[1] === "desc" ? "asc" : "desc"
+        this.searchParams.order.split(':')[1] === 'desc' ? 'asc' : 'desc'
       }`;
       this.getGoodsInfo();
       // this.$router.push({

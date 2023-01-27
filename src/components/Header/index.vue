@@ -16,7 +16,7 @@
           <router-link style="margin:20px" to="/test" >test传送门</router-link>
         </div>
         <div class="typeList">
-          <router-link to="">我的订单</router-link>
+          <router-link to="/center">我的订单</router-link>
           <!-- <router-link to="shopcart">我的购物车</router-link> -->
           <router-link to="/shopcart">我的购物车</router-link>
           <a href="###">我的尚品汇</a>
